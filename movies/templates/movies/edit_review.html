@@ -9,10 +9,11 @@
         <form method="POST">
           {% csrf_token %}
           <p>
-            <label for="comment">Comment:</label>
-            <textarea name="comment" required
-            class="form-control" id="comment">{{
-            template_data.review.comment }}</textarea>
+          
+            <label for="text">Text:</label>
+            <textarea name="text" required
+            class="form-control" id="text">{{
+            template_data.review.text }}</textarea>
           </p>
           <div class="text-start">
             <button type="submit"
