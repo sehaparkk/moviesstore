@@ -15,7 +15,4 @@ class Migration(migrations.Migration):
             old_name='comment',
             new_name='text',
         ),
-        migrations.DeleteModel(
-            name='Comment',
-        ),
     ]
