@@ -22,6 +22,9 @@
               <div class="col-auto">
                 <button class="btn bg-dark text-white" type="submit">Add to cart</button>
               </div>
+              <div class="col-auto">
+                <a href="{% url 'watchlist.add' movie_id=template_data.movie.id %}" class="btn btn-secondary">Add to Watchlist</a>
+              </div>
             </div>
           </form>
         </p>
