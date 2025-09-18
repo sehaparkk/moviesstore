@@ -5,7 +5,8 @@ from .utils import calculate_cart_total
 from .models import Order, Item
 from django.contrib.auth.decorators import login_required
 
-def index(request, cart_id="1"):
+def index(request):
+    cart_id = request.GET.get('cart_id', "1")
     cart_total = 0
     movies_in_cart = []
     cart = request.session.get('cart', {}).get(cart_id, {})
@@ -30,21 +31,21 @@ def add(request, id):
         cart[cart_id] = {}
     cart[cart_id][id] = request.POST['quantity']
     request.session['cart'] = cart
-    return redirect('cart.index', cart_id=cart_id)
+    return redirect(f'/cart/?cart_id={cart_id}')
 
 def clear(request, cart_id):
     cart = request.session.get('cart', {})
     if cart_id in cart:
         cart[cart_id] = {}
     request.session['cart'] = cart
-    return redirect('cart.index', cart_id=cart_id)
+    return redirect(f'/cart/?cart_id={cart_id}')
 
 @login_required
 def purchase(request, cart_id):
     cart = request.session.get('cart', {}).get(cart_id, {})
     movie_ids = list(cart.keys())
     if (movie_ids == []):
-        return redirect('cart.index', cart_id=cart_id)
+        return redirect(f'/cart/?cart_id={cart_id}')
     movies_in_cart = Movie.objects.filter(id__in=movie_ids)
     cart_total = calculate_cart_total(cart, movies_in_cart)
     order = Order()

@@ -12,7 +12,7 @@
     </div>
     <div class="row mb-3">
       <div class="col">
-        <form method="GET" action="{% url 'cart.index' %}">
+        <form method="GET" action="">
           <div class="input-group">
             <select name="cart_id" class="form-select" onchange="this.form.submit()">
               {% for cart in template_data.carts %}
