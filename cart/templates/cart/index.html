@@ -6,8 +6,21 @@
   <div class="container">
     <div class="row mt-3">
       <div class="col mx-auto mb-3">
-        <h2>Shopping Cart</h2>
+        <h2>Shopping Cart - {{ template_data.title }}</h2>
         <hr />
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col">
+        <form method="GET" action="{% url 'cart.index' %}">
+          <div class="input-group">
+            <select name="cart_id" class="form-select" onchange="this.form.submit()">
+              {% for cart in template_data.carts %}
+                <option value="{{ cart }}" {% if cart == template_data.cart_id %}selected{% endif %}>Cart {{ cart }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </form>
       </div>
     </div>
     <div class="row m-1">
@@ -26,7 +39,7 @@
             <td>{{ movie.id }}</td>
             <td>{{ movie.name }}</td>
             <td>${{ movie.price }}</td>
-            <td>{{ request.session.cart|get_quantity:movie.id }}</td>
+            <td>{{ request.session.cart|get_item:template_data.cart_id|get_quantity:movie.id }}</td>
           </tr>
           {% endfor %}
         </tbody>
@@ -36,10 +49,10 @@
       <div class="text-end">
         <a class="btn btn-outline-secondary mb-2"><b>Total to pay:</b> ${{ template_data.cart_total }}</a>
         {% if template_data.movies_in_cart|length > 0 %}
-        <a href="{% url 'cart.purchase' %}"
+        <a href="{% url 'cart.purchase' cart_id=template_data.cart_id %}"
           class="btn bg-dark text-white mb-2">Purchase
         </a>
-        <a href="{% url 'cart.clear' %}">
+        <a href="{% url 'cart.clear' cart_id=template_data.cart_id %}">
           <button class="btn btn-danger mb-2">
             Remove all movies from Cart
           </button>
