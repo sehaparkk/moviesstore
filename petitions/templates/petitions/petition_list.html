@@ -1,26 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Movie Petitions</h2>
-  <a href="{% url 'petitions:create_petition' %}">Create New Petition</a>
-  <ul>
+<div class="container">
+  <h2 class="text-center my-4">Movie Petitions</h2>
+  <div class="text-center mb-4">
+    <a href="{% url 'petitions:create_petition' %}" class="btn btn-primary">Create New Petition</a>
+  </div>
+  <div class="row">
     {% for petition in petitions %}
-      <li>
-        <h3>{{ petition.movie_title }}</h3>
-        <p>{{ petition.description }}</p>
-        <p>Created by: {{ petition.created_by.username }}</p>
-        <p>Votes: {{ petition.votes.count }}</p>
-        <form action="{% url 'petitions:vote' petition.id %}" method="post">
-          {% csrf_token %}
-          <button type="submit">
-            {% if user in petition.votes.all %}
-              Unvote
-            {% else %}
-              Vote
-            {% endif %}
-          </button>
-        </form>
-      </li>
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ petition.movie_title }}</h5>
+            <p class="card-text">{{ petition.description }}</p>
+            <p class="card-text"><small class="text-muted">Created by: {{ petition.created_by.username }}</small></p>
+            <p class="card-text"><small class="text-muted">Votes: {{ petition.votes.count }}</small></p>
+            <form action="{% url 'petitions:vote' petition.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn {% if user in petition.votes.all %}btn-danger{% else %}btn-success{% endif %}">
+                {% if user in petition.votes.all %}
+                  Unvote
+                {% else %}
+                  Vote
+                {% endif %}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     {% endfor %}
-  </ul>
+  </div>
+</div>
 {% endblock %}
